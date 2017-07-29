@@ -1,14 +1,31 @@
-all: exec
+
+# gfortran or pgfortran
+FC = pgfortran 
+
+ifeq ($(FC), 'gfortran')
+  FCFLAGS = -c
+else ($(FC), 'pgfortran')
+#  FCFLAGS = -c 
+  FCFLAGS = -fast -c -Minfo=all,ccff
+endif  
+
+exe = run.exe
+
+OBJECTS = precision.o lib.o compute_pi.o
+
+
+all: $(exe)
+
+precision.o: precision.f90
+	$(FC) $(FCFLAGS) precision.f90
 
 lib.o: lib.f90
-	gfortran -c lib.f90
+	$(FC) $(FCFLAGS) lib.f90
 
 compute_pi.o: compute_pi.f90
-	gfortran -c compute_pi.f90
+	$(FC) $(FCFLAGS) compute_pi.f90
 
-exec: lib.o compute_pi.o
-	gfortran - o lib.o compute_pi.o
-
+$(exe): $(OBJECTS)
+	$(FC) -o $(exe) $(OBJECTS)
 clean:
-	rm exec *.o *.mod
-	
+	rm -rf $(exe) *.o *.mod
