@@ -4,9 +4,9 @@ FC = pgfortran
 
 ifeq ($(FC), 'gfortran')
   FCFLAGS = -c
-else ifeq($(FC), 'pgfortran')
+else ($(FC), 'pgfortran')
 #  FCFLAGS = -c 
-  FCFLAGS = -fast -c -Minfo=all,ccff
+  FCFLAGS = -c -fast -Minfo=all,ccff
 endif  
 
 exe = run.exe
