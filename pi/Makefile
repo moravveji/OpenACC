@@ -6,7 +6,7 @@ ifeq ($(FC), 'gfortran')
   FCFLAGS = -c
 else ($(FC), 'pgfortran')
 #  FCFLAGS = -c 
-  FCFLAGS = -c -fast -Minfo=all,ccff
+  FCFLAGS = -c -fast -Mvect -Minfo=all,ccff
 endif  
 
 exe = run.exe
