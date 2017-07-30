@@ -4,7 +4,7 @@ FC = pgfortran
 
 ifeq ($(FC), 'gfortran')
   FCFLAGS = -c
-else ($(FC), 'pgfortran')
+else ifeq($(FC), 'pgfortran')
 #  FCFLAGS = -c 
   FCFLAGS = -fast -c -Minfo=all,ccff
 endif  
