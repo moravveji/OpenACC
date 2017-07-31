@@ -2,11 +2,15 @@
 # gfortran or pgfortran
 FC = pgfortran 
 
+GCCFLAGS = -c
+PGIFLAGS = -c -fast -Mvect -Minfo=all,ccff -ta=tesla
+
 ifeq ($(FC), 'gfortran')
-  FCFLAGS = -c
-else ($(FC), 'pgfortran')
+  FCFLAGS=$(GCCFLAGS)
+else 
 #  FCFLAGS = -c 
-  FCFLAGS = -c -fast -Mvect -Minfo=all,ccff
+#  FCFLAGS = -c -fast -Mvect -Minfo=all,ccff
+  FCFLAGS=$(PGIFLAGS)
 endif  
 
 exe = run.exe
