@@ -3,7 +3,7 @@
 FC = pgfortran 
 
 GCCFLAGS = -c
-PGIFLAGS = -c -fast -Mvect -Minfo=all,ccff -ta=tesla
+PGIFLAGS = -c -fast -Mvect -Minfo=all,ccff -ta=tesla:keep,analysis,CUDA8.0
 
 ifeq ($(FC), 'gfortran')
   FCFLAGS=$(GCCFLAGS)

@@ -8,7 +8,7 @@ program compute_pi
   implicit none
 
   integer :: none
-  integer, parameter :: N = 1000000, M = 1000000
+  integer, parameter :: N = 1000000, M = 100000
 
   none = check_precision()
 
