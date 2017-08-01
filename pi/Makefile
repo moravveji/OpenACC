@@ -1,17 +1,17 @@
 
-# gfortran or pgfortran
-FC = pgfortran 
+# compile by specifying the Fortran compiler name, e.g.
+# $> make FC=gfortran
+# or 
+# $> make FC=pgfortran
 
 GCCFLAGS = -c
-PGIFLAGS = -c -fast -Mvect -Minfo=all,ccff -ta=tesla:keep,analysis,CUDA8.0
+PGIFLAGS = -c -fast -Mvect -Minfo=all,ccff -ta=tesla:keep,analysis #,CUDA8.0
 
-ifeq ($(FC), 'gfortran')
+ifeq ($(FC),gfortran)
   FCFLAGS=$(GCCFLAGS)
-else 
-#  FCFLAGS = -c 
-#  FCFLAGS = -c -fast -Mvect -Minfo=all,ccff
+else
   FCFLAGS=$(PGIFLAGS)
-endif  
+endif
 
 exe = run.exe
 

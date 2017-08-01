@@ -44,11 +44,11 @@ module lib
     real(dp) :: sum !num, denum
 
     sum = 0d0
-    !#acc parallel loop reduction(+:sum) 
+    !$acc parallel loop reduction(+:sum) 
     do k = 0, n
        sum = sum + fraction(k)
     enddo
-    !#acc end parallel loop
+    !$acc end parallel loop
     pi = 4d0 * sum
 
     contains 
