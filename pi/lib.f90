@@ -44,7 +44,7 @@ module lib
     real(dp) :: sum !num, denum
 
     sum = 0d0
-    !$acc parallel loop reduction(+:sum) 
+    !$acc parallel loop reduction(+:sum)
     do k = 0, n
        sum = sum + fraction(k)
     enddo
@@ -54,6 +54,7 @@ module lib
     contains 
 
     real(dp) function fraction(k) result(f)
+      !$acc routine seq
       integer, intent(in) :: k
       f = (-1d0)**(mod(k,2)) / (2d0*k + 1d0) 
     end function fraction

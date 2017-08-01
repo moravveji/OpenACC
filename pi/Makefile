@@ -5,20 +5,32 @@
 # $> make FC=pgfortran
 
 GCCFLAGS = -c
-PGIFLAGS = -c -fast -Mvect -Minfo=all,ccff -ta=tesla:keep,analysis #,CUDA8.0
+PGIFLAGS = -c -fast -acc -Mvect -Minfo=all,ccff -ta=tesla #:keep,analysis #,CUDA8.0
 
-ifeq ($(FC),gfortran)
-  FCFLAGS=$(GCCFLAGS)
-else
-  FCFLAGS=$(PGIFLAGS)
+OBJECTS  = precision.o lib.o compute_pi.o
+exe      = run.exe
+
+all: 
+	@echo 
+	@echo "Error: type either   make gnu   or   make pgi"
+	@echo
+
+gnu: FC_GNU compile
+pgi: FC_PGI compile
+
+ifeq ($(MAKECMDGOALS),gnu)
+  FC_GNU:
+    FC = gfortran
+    FCFLAGS=$(GCCFLAGS)
 endif
 
-exe = run.exe
+ifeq ($(MAKECMDGOALS),pgi)
+  FC_PGI:
+    FC = pgfortran
+    FCFLAGS = $(PGIFLAGS)
+endif
 
-OBJECTS = precision.o lib.o compute_pi.o
-
-
-all: $(exe)
+compile: $(exe)
 
 precision.o: precision.f90
 	$(FC) $(FCFLAGS) precision.f90
