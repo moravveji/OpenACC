@@ -8,6 +8,8 @@ module lib
   private
   public :: pi_Gregory_Leibniz, &
             pi_area_rand
+  
+  logical, parameter :: gpu = .false.
 
   contains
 
@@ -39,12 +41,13 @@ module lib
   real(dp) function pi_Gregory_Leibniz(n) result(pi)
     integer, intent(in) :: n
     
-    integer :: k
-    ! double precision :: num, denum
+    integer, value :: k
     real(dp) :: sum !num, denum
+    real(dp), external :: fraction
+    !$acc routine(fraction) seq
 
     sum = 0d0
-    !$acc parallel loop reduction(+:sum)
+    !$acc parallel loop reduction(+:sum) if(gpu)
     do k = 0, n
        sum = sum + fraction(k)
     enddo

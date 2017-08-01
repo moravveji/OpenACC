@@ -5,7 +5,7 @@
 # $> make FC=pgfortran
 
 GCCFLAGS = -c
-PGIFLAGS = -c -fast -acc -Mvect -Minfo=all,ccff -ta=tesla #:keep,analysis #,CUDA8.0
+PGIFLAGS = -c -fast -acc -Mvect -Minfo=all,ccff -ta=tesla:nordc #:keep,analysis #,CUDA8.0
 
 OBJECTS  = precision.o lib.o compute_pi.o
 exe      = run.exe
