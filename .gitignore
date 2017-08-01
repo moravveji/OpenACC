@@ -1,4 +1,4 @@
 *.o
 *.mod
 *.exe
-*core.*
+core.*
