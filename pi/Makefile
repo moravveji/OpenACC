@@ -5,8 +5,8 @@
 # $> make pgi 
 
 GNUFLAGS = -c
-PGIFLAGS = -c -fast -acc -ta=nvidia 
-LIBS     = -Minfo=all,accel,ccff -Mpreprocess
+PGIFLAGS = -c -g -fast -acc -ta=nvidia 
+LIBS     = -Minfo=all,accel,ccff -Mpreprocess -Mcuda -Mcudalib=curand
 
 OBJECTS  = precision.o lib.o compute_pi.o
 exe      = run.exe

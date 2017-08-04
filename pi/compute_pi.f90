@@ -8,11 +8,12 @@ program compute_pi
   implicit none
 
   integer :: none
-  integer, parameter :: N = 1000000, M = 10000
+  real(dp) :: pi_gl, pi_area
+  integer, parameter :: N = 1000000, M = 20000
 
   none = check_precision()
 
-  write(*, '(a, 1x,es22.15e3)') 'pi_gregory_leibniz =', pi_Gregory_Leibniz(N)
-  write(*, '(a, 1x, es22.15e3)') 'pi_area_rand = ', pi_area_rand(M)
+  pi_gl = pi_Gregory_Leibniz(N)
+  pi_area = pi_area_rand(M) 
 
 end program compute_pi
