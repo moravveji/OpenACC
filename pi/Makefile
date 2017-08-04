@@ -4,17 +4,14 @@
 # or 
 # $> make pgi 
 
-GCCFLAGS = -c
-PGIFLAGS = -c -fast -acc -ta=tesla #:keep,analysis #,CUDA8.0
-LIBS     = -Mvect -Minfo=all,ccff
+GNUFLAGS = -c
+PGIFLAGS = -c -fast -acc -ta=nvidia 
+LIBS     = -Minfo=all,accel,ccff -Mpreprocess
 
 OBJECTS  = precision.o lib.o compute_pi.o
 exe      = run.exe
 
 all: 
-	@echo $(WHICH_FC) 
-	@echo $(DIR_FC) 
-	@echo $(DIR_LIBS)
 	@echo 
 	@echo "Error: type either   make gnu   or   make pgi"
 	@echo
@@ -25,7 +22,7 @@ pgi: FC_PGI compile
 ifeq ($(MAKECMDGOALS),gnu)
   FC_GNU:
     FC = gfortran
-    FCFLAGS=$(GCCFLAGS)
+    FCFLAGS=$(GNUFLAGS)
 endif
 
 ifeq ($(MAKECMDGOALS),pgi)
@@ -50,6 +47,7 @@ compute_pi.o: compute_pi.f90
 	$(FC) $(FCFLAGS) compute_pi.f90
 
 $(exe): $(OBJECTS)
-	$(FC) -o $(exe) $(OBJECTS) -L$(DIR_LIBS) $(LIBS)
+	$(FC) -acc -o $(exe) $(OBJECTS) $(LIBS)
+
 clean:
-	rm -rf $(exe) *.o *.mod
+	rm -rf $(exe) *.o *.mod *.gpu

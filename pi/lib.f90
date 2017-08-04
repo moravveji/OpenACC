@@ -2,6 +2,7 @@
 module lib
 
   use precision
+  use openacc
 
   implicit none
 
@@ -9,7 +10,7 @@ module lib
   public :: pi_Gregory_Leibniz, &
             pi_area_rand
   
-  logical, parameter :: gpu = .false.
+  logical, parameter :: gpu = .true.
 
   contains
 
@@ -43,18 +44,22 @@ module lib
     
     integer, value :: k
     real(dp) :: sum !num, denum
-    real(dp), external :: fraction
+    real(dp) :: fraction
     !$acc routine(fraction) seq
 
+    call acc_init(acc_device_nvidia)
+    
     sum = 0d0
-    !$acc parallel loop reduction(+:sum) if(gpu)
+    !$acc parallel loop reduction(+:sum) 
     do k = 0, n
        sum = sum + fraction(k)
     enddo
     !$acc end parallel loop
     pi = 4d0 * sum
 
-    contains 
+  end function pi_Gregory_Leibniz
+  
+  ! =============================================
 
     real(dp) function fraction(k) result(f)
       !$acc routine seq
@@ -62,8 +67,7 @@ module lib
       f = (-1d0)**(mod(k,2)) / (2d0*k + 1d0) 
     end function fraction
 
-  end function pi_Gregory_Leibniz
-  
+
   ! =============================================
   real(dp) function pi_area_rand(n) result(pi)
     integer, intent(in) :: n 
