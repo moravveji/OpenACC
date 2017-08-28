@@ -1,0 +1,10 @@
+source switch_to_2015a
+module load foss
+module load K40c/2015a
+#module load K20Xm/2015a
+module load git/2.13.4-GCC-4.9.2
+module load PGI
+
+export PGI_ACC_NOTIFY=3
+export PGI_ACC_TIME=1
+

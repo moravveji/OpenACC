@@ -14,7 +14,7 @@ program fig_1_01
 
   nCount = 6; nLoop = 40
   print '(2(a,i4))', 'nCount=', nCount, '; and nLoop=', nLoop 
-!  read *, nCount, nLoop
+
   if (nCount <= 0 .or. nLoop <= 0) stop 'nCount and nLoop must be greater than zero'
   
   nCount = nCount * 1000000
@@ -24,25 +24,26 @@ program fig_1_01
   
   call cpu_time(start)
 
-  !$acc kernels shared(nCount, nLoop) private(isum, array) \
-  !$acc copyin(array)
+  isum = 0
+
+  !$acc enter data create(array) 
+  !$acc kernels loop
   do j = 1, nLoop
 
     ! Here is where we fill the status vector
-    !$acc loop
     do k = 1, nCount
        array(k) = 1
     enddo
-    !$acc end loop
 
-    isum = 0
+
+
     do k = 1, nCount
        isum = isum + array(k)
     enddo 
 
-  enddo
-  !$acc end kernels
-  
+  enddo 
+  !  end kernels loop
+
   call cpu_time(end)
 
   equal = .false.
@@ -52,3 +53,4 @@ program fig_1_01
   print '(a, f7.4, a)', 'Runtime took ', end-start, ' (sec)'
 
 end program fig_1_01
+
