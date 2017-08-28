@@ -12,7 +12,7 @@ program fig_1_01
   
   call acc_init(acc_device_nvidia) 
 
-  nCount = 6; nLoop = 40
+  nCount = 6; nLoop = 1000
   print '(2(a,i4))', 'nCount=', nCount, '; and nLoop=', nLoop 
 
   if (nCount <= 0 .or. nLoop <= 0) stop 'nCount and nLoop must be greater than zero'
@@ -24,25 +24,26 @@ program fig_1_01
   
   call cpu_time(start)
 
-  isum = 0
-
-  !$acc enter data create(array) 
-  !$acc kernels loop
+  !$acc data create(array) pcopyin(nCount, nLoop) pcopy(isum) 
   do j = 1, nLoop
 
     ! Here is where we fill the status vector
+    !$acc kernels loop
     do k = 1, nCount
        array(k) = 1
     enddo
+  
+    isum = 0
 
-
-
+    !$acc loop 
     do k = 1, nCount
+       !$acc atomic
        isum = isum + array(k)
     enddo 
+    !$acc end kernels loop
 
   enddo 
-  !  end kernels loop
+  !$acc end data
 
   call cpu_time(end)
 
