@@ -7,7 +7,9 @@ PGIFLAGS = -Minfo=accel
 OBJS     = vars.o kern.o main.o
 EXE      = drv_types.exe
 
-all: $(EXE) run
+all: compile run
+
+compile: $(EXE)
 
 $(EXE): $(OBJS)
 	$(FC) $(PGIFLAGS) -o $(EXE) $(OBJS) $(ACCFLAGS)
