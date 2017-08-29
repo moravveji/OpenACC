@@ -26,19 +26,15 @@ program src
   isum = 0
  
   ! Here is where we fill the status vector
-  !$acc data copyin(array(1:nCount)) copyout(isum)
-  !$acc kernels  
+  !$acc parallel loop copyin(array(1:nCount)) copyout(isum)
   do k = 1, nCount
      array(k) = 1
   enddo
-  
-  !$acc loop reduction(+:isum)
+  !$ acc end parallel loop
+
   do k = 1, nCount
      isum = isum + array(k)
   enddo 
-  !$acc end loop
-  !$acc end kernels
-  !$acc end data
 
   call cpu_time(end)
 

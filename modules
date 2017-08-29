@@ -3,7 +3,7 @@ module load foss
 module load K40c/2015a
 #module load K20Xm/2015a
 module load git/2.13.4-GCC-4.9.2
-module load PGI
+module load PGI/17.4
 
 export ACC_DEVICE_TYPE=nvidia
 #export PGI_ACC_NOTIFY=1
