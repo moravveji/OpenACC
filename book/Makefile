@@ -1,18 +1,32 @@
 FC = pgfortran
-FCFLAGS  = -c -ta=tesla,multicore
+FCFLAGS  = -c 
+PGIFLAGS = -ta=tesla,multicore
 ACCFLAGS = -Mcuda #-Minfo=all,accel -Mprof=ccff
 
-EXE = run-1-01.exe
+CPU = run-1-01-cpu.exe
+GPU = run-1-01-gpu.exe
 
-all: $(EXE) run
+all: $(CPU) $(GPU) run
 
-run: ./$(EXE) # << $(shell (echo 1 2))
+run: 
+	@echo
+	@echo "Running on CPU ..."; ./$(CPU)
+	@echo
+	@echo "Running on GPU ..."; ./$(GPU) 
+	@echo
 
-$(EXE): fig-1-01.o
-	$(FC) -acc -o $(EXE) fig-1-01.o $(ACCFLAGS) 
 
-fig-1-01.o: fig-1-01.f90
-	$(FC) $(FCFLAGS) fig-1-01.f90
+$(CPU): fig-1-01-cpu.o
+	$(FC) -o $(CPU) fig-1-01-cpu.o
+
+$(GPU): fig-1-01-gpu.o
+	$(FC) -acc -o $(GPU) fig-1-01-gpu.o $(ACCFLAGS) 
+
+fig-1-01-gpu.o: fig-1-01.f90
+	$(FC) $(FCFLAGS) $(PGIFLAGS) fig-1-01.f90 -o fig-1-01-gpu.o
+
+fig-1-01-cpu.o: fig-1-01.f90
+	$(FC) $(FCFLAGS) fig-1-01.f90 -o fig-1-01-cpu.o
 
 clean:
-	rm -f *.o *.mod $(EXE) 
+	rm -f *~ *.o *.mod *.exe

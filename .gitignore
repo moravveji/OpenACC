@@ -4,4 +4,5 @@
 core.*
 *.out
 *.gpu
+*~
 modules.rc
