@@ -38,7 +38,7 @@ program fig_1_01
   enddo 
 
   call cpu_time(end)
-
+  print*, array(:3)
   equal = .false.
   equal = (isum == nCount)
   print '(a,i4,a)', 'Final sum is ', isum/1000000, ' millions'

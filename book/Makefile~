@@ -1,5 +1,5 @@
 FC = pgfortran
-FCFLAGS  = -c -ta=tesla,multicore
+FCFLAGS  = -c -ta=tesla #,multicore
 ACCFLAGS = -Mcuda #-Minfo=all,accel -Mprof=ccff
 
 EXE = run-1-01.exe
