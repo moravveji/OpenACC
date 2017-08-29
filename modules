@@ -5,7 +5,7 @@ module load K40c/2015a
 module load git/2.13.4-GCC-4.9.2
 module load PGI
 
-export ACC_DEVICE_TYPE=acc_device_nvidia
-export PGI_ACC_NOTIFY=1
-export PGI_ACC_TIME=1
+export ACC_DEVICE_TYPE=nvidia
+#export PGI_ACC_NOTIFY=1
+#export PGI_ACC_TIME=1
 
