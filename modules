@@ -1,5 +1,9 @@
 source switch_to_2015a
 module load foss
+
+module load Python/2.7.9-foss-2015a
+module load matplotlib/1.5.1-foss-2015a-Python-2.7.9
+
 module load K40c/2015a
 #module load K20Xm/2015a
 module load git/2.13.4-GCC-4.9.2

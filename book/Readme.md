@@ -3,7 +3,7 @@
 ## Purpose
 This directory provides the Fortran 90 equivalent of the C++ codes given in the **Parallel Programming with OpenACC** book by Rob Farber, Elsevier, 2017 (https://www.elsevier.com/books/parallel-programming-with-openacc/farber/978-0-12-410397-9).
 
-## Test Device and Environments
+## Device and Environment Requirements
 For the development and testing, I have used a Kepler K40c (and sometimes K20Xm depending on the availability) NVIDIA GPU on a Westmere compute node. To compile and test each of the examples, the following environment variables and compilers are used
 
 ```bash

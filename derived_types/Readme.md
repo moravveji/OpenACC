@@ -6,4 +6,6 @@ This small project tries to exploit using Fortran 90 derived types, with allocat
 ## Content
 + `vars.f90` module where the derived type and the data movement subroutines are defined
 + `kern.f90` module which contains the kernel for filling up the 2D Gaussian curve
++ `io.f90` module for a basic flushing of the data to an ASCII file for plotting
 + `main.f90` program file which `use`s the other two modules, moves the data around, and launches the kernel.
++ `plotter.py` for a simple plotting of the `gaussian2d.txt` file, to make sure that the 2D Gaussian bell curve looks OK on a coarse grid.

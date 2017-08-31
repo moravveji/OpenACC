@@ -4,7 +4,7 @@ FCFLAGS  = -c
 ACCFLAGS = -acc -ta=tesla:cuda8.0,cc35
 PGIFLAGS = -Minfo=accel
 
-OBJS     = vars.o kern.o main.o
+OBJS     = io.o vars.o kern.o main.o
 EXE      = drv_types.exe
 
 all: compile run
