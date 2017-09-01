@@ -9,13 +9,14 @@ program main
   implicit none
  
   integer :: ierr, k
+  character :: cmnd
   type(gaussian2d) :: g
 
   ! Specify the Gaussian curve propertise
   g% nx = 100
   g% ny = 100
-  g% sx = 1.2345
-  g% sy = 0.8765
+  g% sx = 0.1234
+  g% sy = 0.0876
   g% x0 = 0.2345
   g% y0 = 0.6789
   allocate(g%x(g%nx), g%y(g%ny), g%curve(g%nx, g%ny), stat=ierr)
@@ -35,7 +36,10 @@ program main
 
   ! write a coarse Gaussian to a file for plotting
   if (g% nx <= 100 .and. g% nx <= 100) then 
-     call write_ascii(g%x, g%y, g%curve, ´'gaussian2d.txt')
+     call write_ascii(g%x, g%y, g%curve, 'gaussian2d.txt')
+     cmnd = 'python plotter.py'
+     call system('python plotter.py')
+!     call execute_command_line(cmnd)
   endif
 
 end program main 

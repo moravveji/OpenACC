@@ -6,7 +6,7 @@ module load matplotlib/1.5.1-foss-2015a-Python-2.7.9
 
 module load K40c/2015a
 #module load K20Xm/2015a
-module load git/2.13.4-GCC-4.9.2
+module load git/2.13.4-foss-2015a
 module load PGI/17.4
 
 export ACC_DEVICE_TYPE=nvidia
