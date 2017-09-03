@@ -10,6 +10,6 @@ module load git/2.13.4-foss-2015a
 module load PGI/17.4
 
 export ACC_DEVICE_TYPE=nvidia
-#export PGI_ACC_NOTIFY=1
-#export PGI_ACC_TIME=1
+export PGI_ACC_NOTIFY=1
+export PGI_ACC_TIME=1
 

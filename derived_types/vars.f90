@@ -1,5 +1,7 @@
 
 module vars
+  
+  use openacc
 
   implicit none
 

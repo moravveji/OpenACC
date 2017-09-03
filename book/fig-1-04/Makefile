@@ -1,5 +1,5 @@
 FC = pgfortran
-FCFLAGS  = -c 
+FCFLAGS  = -c
 PGIFLAGS = -acc -ta=tesla:cuda8.0,cc35
 ACCFLAGS = -Minfo=accel # -Mcuda -Mprof=ccff
 

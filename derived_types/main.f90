@@ -1,7 +1,8 @@
 
 
 program main
-
+  
+  use openacc
   use io
   use vars
   use kern
@@ -12,9 +13,13 @@ program main
   character :: cmnd
   type(gaussian2d) :: g
 
+  ! set the ACC device
+  call acc_init(acc_device_nvidia)
+  call acc_set_device_num(0, acc_device_nvidia)
+
   ! Specify the Gaussian curve propertise
-  g% nx = 100
-  g% ny = 100
+  g% nx = 10000
+  g% ny = 10000
   g% sx = 0.1234
   g% sy = 0.0876
   g% x0 = 0.2345
@@ -26,6 +31,7 @@ program main
   g% y(1 : g% ny) = (/ (k/real(g% ny), k = 0, g% ny-1) /)
 
   ! copy the derived type from host to device
+  !$acc data
   call h2d(g)
 
   ! launch the kernel
@@ -33,13 +39,13 @@ program main
 
   ! copy the useful results back to the host
   call d2h(g)
+  !$acc end data
 
   ! write a coarse Gaussian to a file for plotting
   if (g% nx <= 100 .and. g% nx <= 100) then 
      call write_ascii(g%x, g%y, g%curve, 'gaussian2d.txt')
      cmnd = 'python plotter.py'
      call system('python plotter.py')
-!     call execute_command_line(cmnd)
   endif
 
 end program main 

@@ -31,6 +31,7 @@ module kern
           a%curve(i,j) = norm * expx * expy
        enddo
     enddo
+    !$acc end parallel loop
 
   end subroutine gen_gauss2d
 

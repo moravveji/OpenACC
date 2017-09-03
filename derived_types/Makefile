@@ -1,8 +1,8 @@
 
 FC       = pgfortran
-FCFLAGS  = -c
-ACCFLAGS = -acc -ta=tesla:cuda8.0,cc35
-PGIFLAGS = -Minfo=accel
+FCFLAGS  = -c 
+PGIFLAGS = -acc -ta=tesla:cuda8.0,cc35
+ACCFLAGS = -Minfo=all 
 
 OBJS     = io.o vars.o kern.o main.o
 EXE      = drv_types.exe
