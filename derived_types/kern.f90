@@ -21,9 +21,9 @@ module kern
     sy = a%sy
     x0 = a%x0
     y0 = a%y0
-    norm = 1.0 / (2.0 * pi * sqrt(sx*sy))
+    norm = 1.0 / (2.0 * pi * sx * sy)
 
-    !$acc parallel loop collapse(2) present(a) copyin(a%x, a%y) private(expx, expy) 
+    !$acc parallel loop collapse(2) data present(a) copyin(a%x, a%y) copyout(a%curve) private(expx, expy) 
     do i = 1, nx
        do j = 1, ny
           expx  = exp(-(a% x(i)-x0)**2/(2.0*sx**2))

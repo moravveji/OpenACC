@@ -2,7 +2,6 @@
 
 program main
   
-  use openacc
   use io
   use vars
   use kern
@@ -31,7 +30,6 @@ program main
   g% y(1 : g% ny) = (/ (k/real(g% ny), k = 0, g% ny-1) /)
 
   ! copy the derived type from host to device
-  !$acc data
   call h2d(g)
 
   ! launch the kernel
@@ -39,7 +37,6 @@ program main
 
   ! copy the useful results back to the host
   call d2h(g)
-  !$acc end data
 
   ! write a coarse Gaussian to a file for plotting
   if (g% nx <= 100 .and. g% nx <= 100) then 
