@@ -9,3 +9,6 @@ This small project tries to exploit using Fortran 90 derived types, with allocat
 + `io.f90` module for a basic flushing of the data to an ASCII file for plotting
 + `main.f90` program file which `use`s the other two modules, moves the data around, and launches the kernel.
 + `plotter.py` for a simple plotting of the `gaussian2d.txt` file, to make sure that the 2D Gaussian bell curve looks OK on a coarse grid.
+
+## Compilation Tip
+One must remember to add the following flags `-acc -ta=tesla:cuda8.0,cc35 -Minfo=accel` to the compiler when compiling and linking the object files. Otherwise, the code compiles well, but does not execute on the device.

@@ -15,7 +15,7 @@ module vars
     real, dimension(:,:), allocatable :: curve ! the 2D gaussian curve
   end type
 
-  type(gaussian2d) :: g2d 
+!  type(gaussian2d) :: g2d 
  
   contains 
 
@@ -25,10 +25,10 @@ module vars
     !$acc enter data create(a%sx, a%sy, a%nx, a%ny, a%x0, a%y0, a%x, a%y, a%curve)
   end subroutine h2d
 
-  subroutine d2h(b)
-    type(gaussian2d) :: b
-    !$acc exit data copyout(b%x, b%y, b%curve)
-    !$acc exit data delete(b)
+  subroutine d2h(a)
+    type(gaussian2d) :: a
+    !$acc exit data copyout(a%x, a%y, a%curve)
+    !$acc exit data delete(a)
   end subroutine d2h
  
 end module vars

@@ -9,7 +9,7 @@ program main
   implicit none
  
   integer :: ierr, k
-  character :: cmnd
+  character(len=:), allocatable :: cmnd
   type(gaussian2d) :: g
 
   ! set the ACC device
@@ -17,10 +17,10 @@ program main
   call acc_set_device_num(0, acc_device_nvidia)
 
   ! Specify the Gaussian curve propertise
-  g% nx = 10000
-  g% ny = 10000
+  g% nx = 100
+  g% ny = 100
   g% sx = 0.1234
-  g% sy = 0.0876
+  g% sy = 0.4567
   g% x0 = 0.2345
   g% y0 = 0.6789
   allocate(g%x(g%nx), g%y(g%ny), g%curve(g%nx, g%ny), stat=ierr)

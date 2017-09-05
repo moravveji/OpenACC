@@ -30,7 +30,7 @@ module io
 
     do j = 1, ny
        do i = 1, nx
-          write(unit=handle, fmt='(3(f8.6, 1x))', iostat=ierr, iomsg=msg, &
+          write(unit=handle, fmt='(3(f9.6, 1x))', iostat=ierr, iomsg=msg, &
                 advance='yes') x(i), y(j), z(i, j)
           if (ierr /= 0) then
               print '(a,2i4)', 'Error: write_ascii: write failed for i,j=', i, j

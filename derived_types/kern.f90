@@ -23,7 +23,8 @@ module kern
     y0 = a%y0
     norm = 1.0 / (2.0 * pi * sx * sy)
 
-    !$acc parallel loop collapse(2) data present(a) copyin(a%x, a%y) copyout(a%curve) private(expx, expy) 
+    !$acc data present(a) copyin(a%x, a%y) copyout(a%curve) 
+    !$acc parallel loop collapse(2) private(expx, expy) 
     do i = 1, nx
        do j = 1, ny
           expx  = exp(-(a% x(i)-x0)**2/(2.0*sx**2))
@@ -32,6 +33,7 @@ module kern
        enddo
     enddo
     !$acc end parallel loop
+    !$acc end data
 
   end subroutine gen_gauss2d
 
