@@ -5,6 +5,7 @@ program main
   use io
   use vars
   use kern
+  use openacc
 
   implicit none
  
@@ -12,15 +13,15 @@ program main
   real, parameter :: xlo=-5, xhi=5, ylo=-5, yhi=5
 
   ! set the ACC device
-!  call acc_init(acc_device_nvidia)
-!  call acc_set_device_num(0, acc_device_nvidia)
+  call acc_init(acc_device_nvidia)
+  call acc_set_device_num(0, acc_device_nvidia)
 
   nx = 101
   ny = 101
   sx = 0.5432
   sy = 1.2345
   x0 = -2.3456
-  y0 = 1.7654
+  y0 = -1.7654
   rho= 0.35
 
   ! copy the derived type from host to device

@@ -18,15 +18,22 @@ module kern
     endif
 
     ! let x and y arrays vary uniformly between lo and hi 
-    ! $ acc data 
     wx = xhi - xlo
     wy = yhi - ylo
     dx = wx / (nx - 1)
     dy = wy / (ny - 1)
 
-    x(1 : nx) = (/ (xlo + (k-1) * dx, k = 1, nx) /)
-    y(1 : ny) = (/ (ylo + (k-1) * dy, k = 1, ny) /)
-    ! $ acc end data
+    !$acc data copy(nx, ny, xlo, ylo, dx, dy) copyout(x, y)
+    !$acc kernels 
+    do k = 1, nx
+       x(k) = xlo + (k-1) * dx
+    enddo
+
+    do k = 1, ny
+       y(k) = ylo + (k-1) * dy
+    enddo
+    !$acc end kernels
+    !$acc end data
 
   end subroutine set_xy
 
@@ -38,7 +45,10 @@ module kern
 
     norm = 2.0 * pi * sx * sy * sqrt(1.0 - rho**2)
     
-    ! $ acc parallel loop collapse(2) private(argx, argy, argxy, arg) 
+    ! $ acc data pcopy(nx, ny, sx, sy, rho, x0, y0, x, y, curve) pcreate(norm, argx, argy, argxy, arg)
+    !$acc data
+    !$acc parallel loop collapse(2) 
+!private(argx, argy, argxy, arg) 
     do i = 1, nx
        do j = 1, ny
           argx  = (x(i) - x0)**2 / sx**2
@@ -48,7 +58,8 @@ module kern
           curve(i,j) = exp(arg) / norm
        enddo
     enddo
-    ! $ acc end parallel loop
+    !$acc end parallel loop
+    !$acc end data
 
   end subroutine gen_gauss2d
 
