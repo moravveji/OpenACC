@@ -8,41 +8,41 @@ program main
 
   implicit none
  
-  integer :: ierr, k
   character(len=:), allocatable :: cmnd
+  real, parameter :: xlo=-5, xhi=5, ylo=-5, yhi=5
   type(gaussian2d) :: g
 
   ! set the ACC device
   call acc_init(acc_device_nvidia)
   call acc_set_device_num(0, acc_device_nvidia)
 
-  ! Specify the Gaussian curve propertise
-  g% nx = 100
-  g% ny = 100
-  g% sx = 0.1234
-  g% sy = 0.4567
-  g% x0 = 0.2345
-  g% y0 = 0.6789
-  allocate(g%x(g%nx), g%y(g%ny), g%curve(g%nx, g%ny), stat=ierr)
-  if (ierr /= 0) stop 'Failed to allocate derived type allocatable arrays'
-  ! let x and y arrays vary uniformly between 0 and 1
-  g% x(1 : g% nx) = (/ (k/real(g% nx), k = 0, g% nx-1) /)
-  g% y(1 : g% ny) = (/ (k/real(g% ny), k = 0, g% ny-1) /)
-
   ! copy the derived type from host to device
   call h2d(g)
+
+  ! Specify the Gaussian curve propertise
+  call alloc(a=g, &
+             nx=101, ny=101, &
+             sx=0.1234, sy=0.4567, &
+             rho=0.2345, &
+             x0 = -2.3456, y0=1.7890)
+
+  ! set x and y arrays to range between the lower to higher range, inclusively
+  call set_xy(a=g, xlo=xlo, xhi=xhi, ylo=ylo, yhi=yhi)
 
   ! launch the kernel
   call gen_gauss2d(g)
 
-  ! copy the useful results back to the host
-  call d2h(g)
-
   ! write a coarse Gaussian to a file for plotting
-  if (g% nx <= 100 .and. g% nx <= 100) then 
+  if (g% nx <= 200 .and. g% nx <= 200) then 
      call write_ascii(g%x, g%y, g%curve, 'gaussian2d.txt')
      cmnd = 'python plotter.py'
      call system('python plotter.py')
   endif
+
+print*, minval(g%x), minval(g%y), minval(g%curve)
+print*, maxval(g%x), maxval(g%y), maxval(g%curve)
+
+  ! copy the useful results back to the host
+!  call d2h(g)
 
 end program main 

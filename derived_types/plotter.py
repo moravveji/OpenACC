@@ -15,6 +15,9 @@ y1d   = np.unique(data['y'])
 z1d   = data['z']
 
 x2d, y2d = np.meshgrid(x1d, y1d)
+
+print x1d.shape, y1d.shape, x2d.shape, y2d.shape
+print x1d
 z2d   = np.reshape(z1d, x2d.shape)
 
 # Plot a contour of z
