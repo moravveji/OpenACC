@@ -25,7 +25,7 @@ z2d   = np.reshape(z1d, x2d.shape)
 fig, ax = plt.subplots(1, figsize=(5, 5))
 #ax.contour(x2d, y2d, z2d)
 
-im    = plt.imshow(z2d, interpolation= 'bilinear', origin='lower', cmap=cm.gray,
+im    = plt.imshow(z2d, interpolation= 'bilinear', origin='lower', cmap=cm.gray_r,
                    extent=(min(x1d), max(x1d), min(y1d), max(y1d)))
 lvls  = np.linspace(min(z1d), max(z1d), 5)
 cs    = plt.contour(z2d, lvls, origin='lower', linewidth=2, 

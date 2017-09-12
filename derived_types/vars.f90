@@ -44,7 +44,7 @@ module vars
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   subroutine h2d(a)
     type(gaussian2d) :: a
-    !$acc enter data copyin(a) pcreate(a%sx, a%sy, a%nx, a%ny, a%rho, a%x0, a%y0) copyin(a%x, a%y, a%curve)
+    !$acc enter data copyin(a) copyin(a%sx, a%sy, a%nx, a%ny, a%rho, a%x0, a%y0, a%x, a%y, a%curve)
   end subroutine h2d
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

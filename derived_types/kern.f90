@@ -7,11 +7,12 @@ module kern
 
   contains
 
+  !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   subroutine set_xy(a, xlo, xhi, ylo, yhi)
     type(gaussian2d), intent(inout) :: a
     real, intent(in) :: xlo, xhi, ylo, yhi
 
-    integer :: k
+    integer :: i, j, k
     real :: wx, wy, dx, dy
 
     if (.not. allocated(a%x) .or. .not. allocated(a%y)) then
@@ -19,14 +20,27 @@ module kern
     endif
 
     ! let x and y arrays vary uniformly between lo and hi 
-    !$acc data present(a)
     wx = xhi - xlo
     wy = yhi - ylo
     dx = wx / (a% nx - 1)
     dy = wy / (a% ny - 1)
 
-    a% x(1 : a% nx) = (/ (xlo + (k-1) * dx, k = 1, a% nx) /)
-    a% y(1 : a% ny) = (/ (ylo + (k-1) * dy, k = 1, a% ny) /)
+    !$acc data pcopy(xlo, ylo, dx, dy) 
+    !$acc kernels 
+    do k = 1, a% nx
+       a% x(k) = xlo + (k-1) * dx
+    enddo
+
+    do k = 1, a% ny
+       a% y(k) = ylo + (k-1) * dy
+    enddo
+
+    do i = 1, a% nx
+       do j = 1, a% ny
+          a% curve(i, j) = -9
+       enddo
+    enddo
+    !$acc end kernels
     !$acc end data
 
   end subroutine set_xy
@@ -38,37 +52,32 @@ module kern
     integer :: nx, ny
     real :: rho, sx, sy, x0, y0
     real :: norm, expx, expy, argx, argy, argxy, arg
-    real, dimension(:), allocatable :: x, y
+!    real, dimension(:), allocatable :: x, y
     real, parameter :: pi = 4.0 * atan(1.0)
 
-    nx = a%nx
-    ny = a%ny
-    sx = a%sx
-    sy = a%sy
-    x0 = a%x0
-    y0 = a%y0
-    rho= a%rho
-    norm = 2.0 * pi * sx * sy * sqrt(1.0 - rho**2)
+!    nx = a%nx
+!    ny = a%ny
+!    sx = a%sx
+!    sy = a%sy
+!    x0 = a%x0
+!    y0 = a%y0
+!    rho= a%rho
+    norm = 2.0 * pi * a% sx * a% sy * sqrt(1.0 - a% rho**2)
     
-print*, 'a% x(0)=', a% x(0)
-    allocate(x(nx), y(ny))
-    !$acc data present(a) create(x, y)
-    !$acc kernels 
-    x(:) = a% x(:)
-    y(:) = a% y(:)
-    !$acc end kernels
+print*, 'a% x(1)=', a% x(1)
 
-    !$acc parallel loop collapse(2) private(argx, argy, argxy, arg) 
-    do i = 1, nx
-       do j = 1, ny
-          argx  = (x(i) - x0)**2 / sx**2
-          argy  = (y(j) - y0)**2 / sy**2
-          argxy = 2 * rho * (x(i) - x0) * (y(j) - y0) / (sx * sy)
-          arg   = (argx + argy - argxy) / (-2 * (1.0 - rho**2))
+    !$acc data present(a% x, a% y, a% curve)
+    !$acc kernels loop collapse(2) private(argx, argy, argxy, arg) 
+    do i = 1, a% nx
+       do j = 1, a% ny
+          argx  = (a% x(i) - a% x0)**2 / a% sx**2
+          argy  = (a% y(j) - a% y0)**2 / a% sy**2
+          argxy = 2 * a% rho * (a% x(i) - a% x0) * (a% y(j) - a% y0) / (a% sx * a% sy)
+          arg   = (argx + argy - argxy) / (-2 * (1.0 - a% rho**2))
           a% curve(i,j) = exp(arg) / norm
        enddo
     enddo
-    !$acc end parallel loop
+    !$acc end kernels loop
     !$acc end data
 
   end subroutine gen_gauss2d
