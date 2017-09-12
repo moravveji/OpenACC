@@ -27,12 +27,12 @@ module vars
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   subroutine h2d()
-    !$acc enter data copyin(sx, sy, nx, ny, rho, x0, y0, x(1:nx), y(1:ny), z(1:nx,1:ny))
+    !$acc enter data copyin(sx, sy, nx, ny, rho, x0, y0, x, y, z)
   end subroutine h2d
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   subroutine d2h()
-    ! $ acc exit data copyout(x(1:nx), y(1:ny), z(1:nx,1:ny))
+    !$acc exit data copyout(x, y, z)
   end subroutine d2h
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

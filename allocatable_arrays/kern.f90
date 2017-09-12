@@ -24,7 +24,7 @@ module kern
     dx = wx / (nx - 1)
     dy = wy / (ny - 1)
 
-    !$acc data pcopy(nx, ny, xlo, ylo, dx, dy) copyout(x, y, z)
+    !$acc data pcopy(nx, ny, xlo, ylo, dx, dy) 
     !$acc kernels 
     do k = 1, nx
        x(k) = xlo + (k-1) * dx

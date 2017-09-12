@@ -18,8 +18,8 @@ program main
 
   nx = 101
   ny = 101
-  sx = 0.5432
-  sy = 1.2345
+  sx = 0.9432
+  sy = 1.6345
   x0 = -2.3456
   y0 = -1.7654
   rho= 0.35
@@ -36,17 +36,14 @@ program main
   ! launch the kernel
   call gen_gauss2d()
 
+  ! copy the useful results back to the host
+  call d2h()
+
   ! write a coarse Gaussian to a file for plotting
   if (nx <= 200 .and. nx <= 200) then 
      call write_ascii(x, y, z, 'gaussian2d.txt')
      cmnd = 'python plotter.py'
      call system('python plotter.py')
   endif
-
-print*, minval(x), minval(y), minval(z)
-print*, maxval(x), maxval(y), maxval(z)
-
-  ! copy the useful results back to the host
-  call d2h()
 
 end program main 
