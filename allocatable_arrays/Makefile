@@ -5,7 +5,7 @@ PGIFLAGS = -acc -ta=tesla:cuda8.0,cc35,llvm
 ACCFLAGS = -Minfo=all,accel 
 
 OBJS     = io.o vars.o kern.o main.o
-EXE      = drv_types.exe
+EXE      = alloc_arr.exe
 
 all: compile run
 
@@ -19,7 +19,7 @@ $(EXE): $(OBJS)
 
 run:
 	@echo 
-	./drv_types.exe
+	./${EXE}
 	@echo
 
 clean:
