@@ -27,8 +27,10 @@ module kern
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  subroutine def_curve(nx, ny, nz, npts, tstart, tend)
+  subroutine def_curve(nx, ny, nz, npts, phix, phiy, phiz, &
+                       tstart, tend)
     integer, intent(in) :: nx, ny, nz, npts
+    real, intent(in) :: phix, phiy, phiz
     real, intent(in) :: tstart, tend
 
     type(point) :: p
@@ -42,6 +44,9 @@ module kern
        p% nx = nx 
        p% ny = ny
        p% nz = nz
+       p% phix = phix 
+       p% phiy = phiy
+       p% phiz = phiz
     enddo
 
     ! set the timesteps
