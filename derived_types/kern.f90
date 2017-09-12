@@ -57,7 +57,7 @@ module kern
     norm = 2.0 * pi * a% sx * a% sy * sqrt(1.0 - a% rho**2)
     
     !$acc data present(a% x, a% y, a% curve)
-    !$acc parallel loop num_gangs(1000) vector_length(100) collapse(2) private(argx, argy, argxy, arg) 
+    !$acc parallel loop collapse(2) private(argx, argy, argxy, arg) device_type(acc_device_nvidia) num_gangs(1000) vector_length(100) 
     do i = 1, a% nx
        do j = 1, a% ny
           argx  = (a% x(i) - a% x0)**2 / a% sx**2
