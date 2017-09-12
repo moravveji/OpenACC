@@ -52,22 +52,12 @@ module kern
     integer :: nx, ny
     real :: rho, sx, sy, x0, y0
     real :: norm, expx, expy, argx, argy, argxy, arg
-!    real, dimension(:), allocatable :: x, y
     real, parameter :: pi = 4.0 * atan(1.0)
 
-!    nx = a%nx
-!    ny = a%ny
-!    sx = a%sx
-!    sy = a%sy
-!    x0 = a%x0
-!    y0 = a%y0
-!    rho= a%rho
     norm = 2.0 * pi * a% sx * a% sy * sqrt(1.0 - a% rho**2)
     
-print*, 'a% x(1)=', a% x(1)
-
     !$acc data present(a% x, a% y, a% curve)
-    !$acc kernels loop collapse(2) private(argx, argy, argxy, arg) 
+    !$acc parallel loop num_gangs(1000) vector_length(100) collapse(2) private(argx, argy, argxy, arg) 
     do i = 1, a% nx
        do j = 1, a% ny
           argx  = (a% x(i) - a% x0)**2 / a% sx**2
@@ -77,7 +67,7 @@ print*, 'a% x(1)=', a% x(1)
           a% curve(i,j) = exp(arg) / norm
        enddo
     enddo
-    !$acc end kernels loop
+    !$acc end parallel loop
     !$acc end data
 
   end subroutine gen_gauss2d
