@@ -40,12 +40,14 @@ In the `gen_gauss2d()` function, and for `nx=10001, ny=10001`, each iteration of
 + 0.10 sec: `num_gangs(32) vector_length(128)` 
 + 0.11 sec: `num_gangs(64) vector_length(128)` 
 + 0.14 sec: `num_gangs(128) vector_length(128)` 
+
 So, obviousely, `vector_length(128)` is the most optimal vector size, and increasing `num_gangs` up to 32 gives a performance better than the default.
 
 Now, we play around with multiples of 10 for the number of gangs and the vector length:
 + 3.64 sec: `num_gangs(10) vector_length(10)` 
 + 0.41 sec: `num_gangs(10) vector_length(100)` 
-+ .087 sec: `num_gangs(100) vector_length(100)`  
++ **.087 sec: `num_gangs(100) vector_length(100)`**
 + 0.13 sec: `num_gangs(1000) vector_length(100)` 
+
 So, multiples of 10 are competitively nice, up to some saturation value for `num_gangs` around 100. `num_gangs(100) vector_length(100)` even performs better than `num_gangs(32) vector_length(128)`
 
