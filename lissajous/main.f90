@@ -6,15 +6,14 @@ program main
 
   implicit none
 
-  integer, parameter :: npoints = 1000
+  integer, parameter :: nx =3, ny=5, nz=7, npoints = 1000
   real, parameter :: tstart = 0, tend = 10
-  real, dimension(:), allocatable :: times
 
-  ! allocate the knot with a fixed number of points
-  call alloc(npoints)
+  ! define the curve with a fixed number of points
+  call def_curve(nx, ny, nz, npoints, tstart, tend)
 
-  times = get_times(tstart, tend, npoints)
-  print *, times(1), times(npoints)
+  ! Now, create one Lissajous curve
+  call make_lissajous()
 
 end program main 
 

@@ -9,17 +9,13 @@ module kern
    contains
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  real function get_times(t0, t1, nt) result(arr)
+  function get_times(t0, t1, nt) result(arr)
     real, intent(in) :: t0, t1
     integer, intent(in) :: nt
-    real, dimension(:), allocatable, intent(out) :: arr
+    real, dimension(nt), intent(out) :: arr
 
     integer :: ierr, k
     real :: dt
-
-    allocate(arr(nt), stat=ierr)
-    if (ierr /= 0) &
-       stop 'kern: get_times: failed to allocate arr(nt)'
 
     dt = (t1 - t0) / (nt - 1)
 
@@ -30,23 +26,45 @@ module kern
   end function get_times
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  subroutine make_lissajous(times)
-    real, intent(in), allocatable :: times(:)
+
+  subroutine def_curve(nx, ny, nz, npts, tstart, tend)
+    integer, intent(in) :: nx, ny, nz, npts
+    real, intent(in) :: tstart, tend
 
     type(point) :: p
-    integer :: ntimes, it
+    integer :: k
+
+    if (.not. allocated(this% knot) .or. &
+        .not. allocated(this% times)) call alloc(npts)
+
+    do k = 1, npts
+       p     = this% knot(k)
+       p% nx = nx 
+       p% ny = ny
+       p% nz = nz
+    enddo
+
+    ! set the timesteps
+    this% times = get_times(tstart, tend, npts)
+
+
+  end subroutine def_curve
+
+  !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  subroutine make_lissajous()
+    type(point) :: p
+    integer :: npts, it
     real :: t
 
-    if (.not. allocated(times)) &
-       stop 'kern: make_lissajous: the times vector is not allocated yet'
-    ntimes = size(times)
+    npts   = this% npoints
+    if (.not. allocated(this% knot) .or. &
+        .not. allocated(this% times)) &
+       stop 'kern: make_lissajous: this%knot or this%times is not allocated yet'
 
-    if (.not. allocated(knot)) &
-       stop 'kern: make_lissajous: the knot is not allocated yet'
-
-    do it = 1, ntimes
-       t   = times(it)
-       p   = knot(it)
+    do it = 1, npts
+       t   = this% times(it)
+       p   = this% knot(it)
        p%x = cos(p%nx * t + p%phix)
        p%y = cos(p%ny * t + p%phiy)
        p%z = cos(p%nz * t + p%phiz)
