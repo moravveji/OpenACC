@@ -1,22 +1,3 @@
-<style TYPE="text/css">
-code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
-</style>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [['$','$'], ['\\(','\\)']],
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] // removed 'code' entry
-    }
-});
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i = 0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-});
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
 # Allocatable Arrays
 
 ## Purpose
@@ -35,4 +16,6 @@ $$x = y $$
 
 ## Tips
 + It is possible to allocate an array declared as `allocatable` on the device. This means, the call to `alloc()` and `h2d()` functions in the `main` program are interchangeable.
-+  
++ The `exit data` clause does not `delete` the arrays, but rather does a `copyout` operation to move the data out of device to the host. 
+
+![image](gaussian2d.png)
