@@ -9,8 +9,6 @@ module vars
   ! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   type, public :: point
-    integer :: nx, ny, nz
-    real :: phix, phiy, phiz
     real :: x, y, z
   end type point
 
@@ -18,6 +16,8 @@ module vars
 
   type, public :: curve
     integer :: npoints
+    integer :: nx, ny, nz
+    real :: phix, phiy, phiz
     type(point), dimension(:), allocatable :: knot
     real, dimension(:), allocatable :: times 
     contains 

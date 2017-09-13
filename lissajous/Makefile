@@ -23,4 +23,4 @@ run:
 	@echo
 
 clean:
-	rm -f *.mod *.o *~ ${EXE}
+	rm -f *.mod *.o *~ ${EXE} data/*
