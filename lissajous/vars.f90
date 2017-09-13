@@ -4,11 +4,11 @@ module vars
 
   implicit none
 
-  public 
+  private 
 
   ! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  type point
+  type, public :: point
     integer :: nx, ny, nz
     real :: phix, phiy, phiz
     real :: x, y, z
@@ -16,31 +16,35 @@ module vars
 
   ! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  type curve
+  type, public :: curve
     integer :: npoints
     type(point), dimension(:), allocatable :: knot
     real, dimension(:), allocatable :: times   
+
+    contains 
+ 
+    procedure, nopass :: alloc
+
   end type curve
-  
-  ! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  type(curve), target, save :: this
+
   ! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   contains
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  subroutine alloc(npts)
+  subroutine alloc(crv, npts)
+    type(curve), intent(inout) :: crv
     integer, intent(in) :: npts
 
     integer :: ierr 
     
-    this% npoints = npts
+    crv% npoints = npts
 
-    if (allocated(this% knot))  deallocate(this% knot)
-    if (allocated(this% times)) deallocate(this% times)
+    if (allocated(crv% knot))  deallocate(crv% knot)
+    if (allocated(crv% times)) deallocate(crv% times)
 
-    allocate(this%knot(npts), this%times(npts), stat=ierr)
+    allocate(crv%knot(npts), crv%times(npts), stat=ierr)
     if (ierr /= 0) &
        stop 'vars: alloc: failed to allocate the knot(npoints) or times(npoints)'
 

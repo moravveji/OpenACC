@@ -27,8 +27,9 @@ module kern
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  subroutine def_curve(nx, ny, nz, npts, phix, phiy, phiz, &
+  subroutine def_curve(crv, nx, ny, nz, npts, phix, phiy, phiz, &
                        tstart, tend)
+    type(curve), intent(inout) :: crv
     integer, intent(in) :: nx, ny, nz, npts
     real, intent(in) :: phix, phiy, phiz
     real, intent(in) :: tstart, tend
@@ -36,40 +37,41 @@ module kern
     type(point) :: p
     integer :: k
 
-    if (.not. allocated(this% knot) .or. &
-        .not. allocated(this% times)) call alloc(npts)
+    if (.not. allocated(crv% knot) .or. &
+        .not. allocated(crv% times)) call crv% alloc(crv, npts)
 
     do k = 1, npts
-       p     = this% knot(k)
        p% nx = nx 
        p% ny = ny
        p% nz = nz
        p% phix = phix 
        p% phiy = phiy
        p% phiz = phiz
+       crv% knot(k) = p
     enddo
 
     ! set the timesteps
-    this% times = get_times(tstart, tend, npts)
-
+    crv% times = get_times(tstart, tend, npts)
 
   end subroutine def_curve
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  subroutine make_lissajous()
+  subroutine make_lissajous(crv)
+    type(curve), intent(inout) :: crv
+
     type(point) :: p
     integer :: npts, it
     real :: t
 
-    npts   = this% npoints
-    if (.not. allocated(this% knot) .or. &
-        .not. allocated(this% times)) &
-       stop 'kern: make_lissajous: this%knot or this%times is not allocated yet'
+    npts   = crv% npoints
+    if (.not. allocated(crv% knot) .or. &
+        .not. allocated(crv% times)) &
+       stop 'kern: make_lissajous: crv%knot or crv%times is not allocated yet'
 
     do it = 1, npts
-       t   = this% times(it)
-       p   = this% knot(it)
+       t   = crv% times(it)
+       p   = crv% knot(it)
        p%x = cos(p%nx * t + p%phix)
        p%y = cos(p%ny * t + p%phiy)
        p%z = cos(p%nz * t + p%phiz)
