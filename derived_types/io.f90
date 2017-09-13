@@ -26,6 +26,7 @@ module io
          position='rewind', iostat=ierr, iomsg=msg)
 
     if (ierr /= 0) then 
+       print*, msg
        stop 'Error: write_ascii: failed to open the file'
     endif
 

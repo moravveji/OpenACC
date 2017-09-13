@@ -19,8 +19,7 @@ module vars
   type, public :: curve
     integer :: npoints
     type(point), dimension(:), allocatable :: knot
-    real, dimension(:), allocatable :: times   
-
+    real, dimension(:), allocatable :: times 
     contains 
  
     procedure, nopass :: alloc

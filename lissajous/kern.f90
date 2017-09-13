@@ -27,16 +27,17 @@ module kern
 
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  subroutine def_curve(crv, nx, ny, nz, npts, phix, phiy, phiz, &
-                       tstart, tend)
+  subroutine def_curve(crv, nx, ny, nz, npts, phix, phiy, phiz)
     type(curve), intent(inout) :: crv
     integer, intent(in) :: nx, ny, nz, npts
     real, intent(in) :: phix, phiy, phiz
-    real, intent(in) :: tstart, tend
 
     type(point) :: p
     integer :: k
     logical, dimension(3) :: OK
+  
+    real, dimension(3) :: t_min, t_max
+    real :: tstart, tend
 
     if (nx < 1 .or. ny < 1 .or. nz < 1) &
        stop 'kern: def_curve: nx, ny and nz must be .ge. 1'
@@ -47,6 +48,17 @@ module kern
        print*, OK
        stop 'kern: def_curve: phix, phiy, phiz must be between 0 and 1'
     endif
+
+    t_min(1) = -phix / nx
+    t_min(2) = -phiy / ny
+    t_min(3) = -phiz / nz
+
+    t_max(1) = (1.0 - phix) / nx
+    t_max(2) = (1.0 - phiy) / ny
+    t_max(3) = (1.0 - phiz) / nz
+
+    tstart   = minval(t_min)
+    tend     = maxval(t_max)
 
     if (.not. allocated(crv% knot) .or. &
         .not. allocated(crv% times)) call crv% alloc(crv, npts)
