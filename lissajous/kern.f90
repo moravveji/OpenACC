@@ -36,6 +36,17 @@ module kern
 
     type(point) :: p
     integer :: k
+    logical, dimension(3) :: OK
+
+    if (nx < 1 .or. ny < 1 .or. nz < 1) &
+       stop 'kern: def_curve: nx, ny and nz must be .ge. 1'
+    OK(1) = (phix >= 0 .or. phix <= 1)
+    OK(2) = (phiy >= 0 .or. phiy <= 1)
+    OK(3) = (phiz >= 0 .or. phiz <= 1)
+    if (.not. all(OK)) then
+       print*, OK
+       stop 'kern: def_curve: phix, phiy, phiz must be between 0 and 1'
+    endif
 
     if (.not. allocated(crv% knot) .or. &
         .not. allocated(crv% times)) call crv% alloc(crv, npts)
@@ -60,9 +71,9 @@ module kern
   subroutine make_lissajous(crv)
     type(curve), intent(inout) :: crv
 
-    type(point) :: p
     integer :: npts, it
     real :: t
+    real, parameter :: pi = 4*atan(1.0), pi2 = 2*pi
 
     npts   = crv% npoints
     if (.not. allocated(crv% knot) .or. &
@@ -71,10 +82,9 @@ module kern
 
     do it = 1, npts
        t   = crv% times(it)
-       p   = crv% knot(it)
-       p%x = cos(p%nx * t + p%phix)
-       p%y = cos(p%ny * t + p%phiy)
-       p%z = cos(p%nz * t + p%phiz)
+       crv% knot(it)% x = cos(pi2 * ( crv% knot(it)% nx * t + crv% knot(it)% phix) )
+       crv% knot(it)% y = cos(pi2 * ( crv% knot(it)% ny * t + crv% knot(it)% phiy) )
+       crv% knot(it)% z = cos(pi2 * ( crv% knot(it)% nz * t + crv% knot(it)% phiz) )
     enddo
     
 

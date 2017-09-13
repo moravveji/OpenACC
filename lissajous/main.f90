@@ -11,14 +11,26 @@ program main
   real, parameter :: tstart = 0, tend = 10
   type(curve), target, save :: this
 
-  ! define the curve with a fixed number of points
-  call def_curve(this, nx, ny, nz, npoints, &
-                 phix, phiy, phiz, tstart, tend)
+  integer :: i_curve
+  integer, parameter :: num_curves = 10
+  type(curve), dimension(num_curves) :: curves
 
-  ! Now, create one Lissajous curve
-!  call make_lissajous(this)
+  do i_curve = 1, num_curves
 
-  print *, this%knot(1)%nz == nz
+    ! define the curve with a fixed number of points
+    call def_curve(this, nx, ny, nz, npoints, &
+                   phix, phiy, phiz, tstart, tend)
+
+    ! Now, create one Lissajous curve
+    call make_lissajous(this)
+
+    ! store the curve as an element of curves
+    curves(i_curve) = this
+
+  enddo
+
+  print *, curves(2)% knot(1)% nz == nz
+!  print *, this%knot(123)
 
 end program main 
 
