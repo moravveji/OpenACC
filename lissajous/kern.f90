@@ -13,6 +13,7 @@ module kern
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   logical function check_mutually_prime(a, b, c) result(check)
+    !$acc routine seq
     integer, intent(in) :: a, b, c
  
     logical, dimension(3) :: OK
@@ -33,6 +34,7 @@ module kern
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   integer function gcd(a, b) 
+    !$acc routine seq
     integer, intent(in) :: a, b
     integer, intent(out) :: gcd 
 
@@ -52,6 +54,7 @@ module kern
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   function get_times(t0, t1, nt) result(arr)
+    !$acc routine seq
     real, intent(in) :: t0, t1
     integer, intent(in) :: nt
     real, dimension(nt), intent(out) :: arr
@@ -70,6 +73,7 @@ module kern
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   subroutine def_curve(crv, nx, ny, nz, npts, phix, phiy, phiz)
+    !$acc routine seq
     type(curve), intent(inout) :: crv
     integer, intent(in) :: nx, ny, nz, npts
     real, intent(in) :: phix, phiy, phiz
@@ -108,6 +112,7 @@ module kern
   !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   subroutine make_lissajous(crv)
+    !$acc routine seq
     type(curve), intent(inout) :: crv
 
     integer :: npts, it

@@ -9,6 +9,21 @@ module io
 
   ! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+  subroutine write_all_curves(curves, dirname)
+     type(curve), dimension(:), intent(in) :: curves
+     character(len=*), intent(in) :: dirname
+
+     integer :: i_curve, n_curves
+     
+     n_curves = size(curves)
+     do i_curve = 1, n_curves
+        call write_one_curve(curves(i_curve), dirname)
+     enddo
+
+  end subroutine write_all_curves
+
+  ! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
   subroutine write_one_curve(crv, dirname)
     type(curve), intent(in) :: crv 
     character(len=*), intent(in) :: dirname
