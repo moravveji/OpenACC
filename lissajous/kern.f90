@@ -41,7 +41,7 @@ module kern
     integer :: k
     
     gcd = 1
-    do k = 2, min(a, b) 
+    do k = min(a, b), 2, -1 
        if (mod(a, k)==0 .and. mod(b, k)==0) then 
           gcd = k
        else

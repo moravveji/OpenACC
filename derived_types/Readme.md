@@ -11,7 +11,7 @@ This small project tries to exploit using Fortran 90 derived types, with allocat
 + `plotter.py` for a simple plotting of the `gaussian2d.txt` file, to make sure that the 2D Gaussian bell curve looks OK on a coarse grid.
 
 ## Tips
-+ A mistake I made was to compile each module with the `-c` flag, and link them all with the `-acc -ta=tesla:cuda8.0,cc35 -Minfo=accel` flags. However, the code does not execute on the device with this build. Instead, the entire `-acc -ta=tesla:cuda8.0,cc35 -Minfo=accel` should be used for compilation and linking, respectively.
++ Hint: compile each module with the `-c` flag, and link them all with the `-acc -ta=tesla:cuda8.0,cc35 -Minfo=accel` flags. However, the code does not execute on the device with this build. Instead, the entire `-acc -ta=tesla:cuda8.0,cc35 -Minfo=accel` should be used for compilation and linking, respectively.
 + The inline `do` loops must be avoided. E.g. the following 
 ```fortran 
 a% x(1 : a% nx) = (/ (xlo + (k-1) * dx, k = 1, a% nx) /)
@@ -51,7 +51,7 @@ Now, we play around with multiples of 10 for the number of gangs and the vector 
 + **.087 sec: `num_gangs(100) vector_length(100)`**
 + 0.13 sec: `num_gangs(1000) vector_length(100)` 
 
-So, multiples of 10 are competitively nice, up to some saturation value for `num_gangs` around 100. `num_gangs(100) vector_length(100)` even performs better than `num_gangs(32) vector_length(128)`. 
+So, multiples of 10 are competitively nice, up to some saturation value for `num_gangs(100)`. The `num_gangs(100) vector_length(100)` even performs better than `num_gangs(32) vector_length(128)`. 
 
 Comparing the runtime of the single-CPU vs. the best GPU performance, a speed up of about **40x** is achieved.
 
